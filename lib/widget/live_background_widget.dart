@@ -44,6 +44,7 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
   BokehFx? _bgFx;
   Ticker? _ticker;
   Palette _palette = const Palette(colors: [Colors.white, Colors.yellow]);
+  Size size = const Size(0, 0);
 
   @override
   void initState() {
@@ -57,7 +58,7 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     WidgetsBinding.instance.endOfFrame.then(
       (_) {
         if (mounted) {
-          final size = MediaQuery.of(context).size;
+          size = MediaQuery.of(context).size;
           _bgFx = BokehFx(
             size: Size(size.width, size.height),
           );
@@ -97,6 +98,11 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
 
   @override
   Widget build(BuildContext context) {
+    final newSize = MediaQuery.of(context).size;
+    if (newSize != size) {
+      size = newSize;
+      _bgFx?.setSize(newSize);
+    }
     return RepaintBoundary(
       child: _bgFx == null
           ? Container()

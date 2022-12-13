@@ -22,22 +22,27 @@ enum ShowCase {
         );
       case ShowCase.HappyNewYear:
         return Container(
-          height: size.height,
           width: size.width,
           child: Column(
             children: [
               Height(100),
               Center(
-                child: Image.asset("assets/images/happy.png"),
+                child: Image.asset(
+                  "assets/images/happy.png",
+                  width: 300,
+                ),
               ),
-              "Wishing you and your family a happy new year filled with hope, health, and happiness - with a generous sprinkle of fun!"
-                  .text
-                  .size(30)
-                  .white
-                  .center
-                  .textStyle(GoogleFonts.secularOne())
-                  .make()
-                  .p16()
+              Container(
+                  constraints: BoxConstraints(maxWidth: 340),
+                  child:
+                      "Wishing you and your family a happy new year filled with hope, health, and happiness - with a generous sprinkle of fun!"
+                          .text
+                          .size(30)
+                          .white
+                          .center
+                          .textStyle(GoogleFonts.secularOne())
+                          .make()),
+              Height(100),
             ],
           ),
         );

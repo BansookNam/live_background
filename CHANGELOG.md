@@ -1,3 +1,9 @@
+## 0.0.5
+
+Support Screen Orientation change
+
+### 2022-12-14
+
 ## 0.0.4
 
 Add Show Cases:
