@@ -20,18 +20,23 @@ live_background: ^{latest version}
 ## Show Case
 
 1. Christmas
-![christmas](https://user-images.githubusercontent.com/7719604/207397829-b9798d23-1212-4f19-a2d4-413bf82e8d0b.gif)
+
+<img src="https://user-images.githubusercontent.com/7719604/207397829-b9798d23-1212-4f19-a2d4-413bf82e8d0b.gif" width="280" height="600"/>
 
 2. Happy New Year
+
 https://user-images.githubusercontent.com/7719604/207383412-5c70a3be-9146-4136-b48b-9fe276938f34.mp4
 
 3. Change Particle Count
+
 https://user-images.githubusercontent.com/7719604/207383901-491692c5-52c8-4429-8c80-0f1380ede8d3.mp4
 
 4. Change Particle's velocity
+
 https://user-images.githubusercontent.com/7719604/207384180-10b8c128-e15a-492b-831a-b3b7025bad60.mp4
 
-4. Change Particle's min/max size
+5. Change Particle's min/max size
+
 https://user-images.githubusercontent.com/7719604/207384463-5e63c237-8b0b-486f-bc3d-fe562d0119e8.mp4
 
 
