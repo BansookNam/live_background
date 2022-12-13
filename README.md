@@ -3,9 +3,13 @@
 [![Version](https://img.shields.io/pub/v/live_background.svg?style=flat-square)](https://pub.dev/packages/live_background)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  Provide nice moving wall paper on your background.
 
+This repository is inspired by [miickel/flutter_particle_clock](https://github.com/miickel/flutter_particle_clock).
+
+And the code of this repository is based on [miickel/flutter_particle_clock](https://github.com/miickel/flutter_particle_clock)
+
 ## Install
 
-Add nav dependency on your pubspec.yaml file
+Add live_background dependency on your pubspec.yaml file
 
 ```yaml
 live_background: ^{latest version}
