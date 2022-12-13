@@ -22,7 +22,8 @@ class SquareButton extends StatelessWidget {
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(15)),
+          decoration: BoxDecoration(
+              color: bgColor, borderRadius: BorderRadius.circular(15)),
           child: text.text.size(20).color(textColor).makeCentered(),
         ));
   }

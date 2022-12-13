@@ -12,7 +12,8 @@ import 'package:velocity_x/velocity_x.dart';
 class EditColorListDialog extends DialogWidget {
   static final data = "data";
   final List<Color>? colorList;
-  EditColorListDialog(BuildContext buildContext, this.colorList) : super(buildContext);
+  EditColorListDialog(BuildContext buildContext, this.colorList)
+      : super(buildContext);
 
   final NavAni ani = NavAni.Bottom;
 
@@ -31,7 +32,9 @@ class _DialogState extends DialogState<EditColorListDialog> {
 
   @override
   void initState() {
-    editedColorList = widget.colorList != null ? List.from(widget.colorList!) : editedColorList;
+    editedColorList = widget.colorList != null
+        ? List.from(widget.colorList!)
+        : editedColorList;
     super.initState();
   }
 
@@ -49,7 +52,8 @@ class _DialogState extends DialogState<EditColorListDialog> {
           children: [
             ListView(
               reverse: true,
-              padding: EdgeInsets.only(bottom: 200 + viewPaddingBottom, top: 150),
+              padding:
+                  EdgeInsets.only(bottom: 200 + viewPaddingBottom, top: 150),
               children: [
                 Container(
                     child: Column(
@@ -65,17 +69,21 @@ class _DialogState extends DialogState<EditColorListDialog> {
                         Height(viewPaddingBottom)
                       ],
                     ),
-                    decoration: new BoxDecoration(borderRadius: BorderRadius.only(topLeft: radius, topRight: radius))),
+                    decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: radius, topRight: radius))),
                 ...editedColorList.map((e) => Row(
                       children: [
                         Width(20),
                         Container(
-                          decoration: BoxDecoration(color: e, shape: BoxShape.circle),
+                          decoration:
+                              BoxDecoration(color: e, shape: BoxShape.circle),
                           height: 50,
                           width: 50,
                         ),
                         Width(20),
-                        Expanded(child: e.toHex().text.white.bold.size(20).make()),
+                        Expanded(
+                            child: e.toHex().text.white.bold.size(20).make()),
                         CloseButton(
                           color: Colors.white,
                           onPressed: () {
@@ -102,7 +110,10 @@ class _DialogState extends DialogState<EditColorListDialog> {
                 Height(10),
                 SquareButton(
                   onPressed: () {
-                    widget.hide({Nav.RESULT: Nav.SUCCESS, EditColorListDialog.data: editedColorList});
+                    widget.hide({
+                      Nav.RESULT: Nav.SUCCESS,
+                      EditColorListDialog.data: editedColorList
+                    });
                   },
                   text: 'Done',
                 ),

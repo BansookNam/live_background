@@ -37,7 +37,8 @@ class BokehFx extends BaseFx {
   void _activateParticle(Particle p) {
     p.x = Rnd.getDouble(0, width);
     p.y = Rnd.getDouble(0, height);
-    p.opacity = Rnd.ratio > .95 ? Rnd.getDouble(.6, .8) : Rnd.getDouble(.08, .4);
+    p.opacity =
+        Rnd.ratio > .95 ? Rnd.getDouble(.6, .8) : Rnd.getDouble(.08, .4);
     p.isFilled = true;
     p.size = Rnd.getDouble(particleMinSize, particleMaxSize);
     p.life = 1;

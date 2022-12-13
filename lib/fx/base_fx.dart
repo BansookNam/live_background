@@ -85,7 +85,9 @@ abstract class BaseFx with ChangeNotifier {
   /// Sets the palette used for coloring.
   void setPalette(Palette palette) {
     this.palette = palette;
-    particles.where((p) => p != null).forEach((p) => p!.color = Rnd.getItem(palette.colors!));
+    particles
+        .where((p) => p != null)
+        .forEach((p) => p!.color = Rnd.getItem(palette.colors!));
   }
 
   /// Sets the canvas size and updates dependent values.

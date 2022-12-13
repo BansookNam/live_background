@@ -98,7 +98,11 @@ class _MyHomePageState extends State<MyHomePage> {
       color: Colors.black.withOpacity(0.0),
       child: Column(children: [
         Height(100),
-        ("Particle Count: " + particleCount.toInt().toString()).text.size(25).white.make(),
+        ("Particle Count: " + particleCount.toInt().toString())
+            .text
+            .size(25)
+            .white
+            .make(),
         Slider(
             value: particleCount,
             max: 1500,
@@ -110,7 +114,11 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             })),
         Height(30),
-        ("Particle velocity X: " + vx.toStringAsFixed(2)).text.size(25).white.make(),
+        ("Particle velocity X: " + vx.toStringAsFixed(2))
+            .text
+            .size(25)
+            .white
+            .make(),
         Slider(
             value: vx,
             max: 100,
@@ -122,7 +130,11 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             })),
         Height(30),
-        ("Particle velocity Y: " + vy.toStringAsFixed(2)).text.size(25).white.make(),
+        ("Particle velocity Y: " + vy.toStringAsFixed(2))
+            .text
+            .size(25)
+            .white
+            .make(),
         Slider(
             value: vy,
             max: 100,
@@ -134,7 +146,11 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             })),
         Height(30),
-        ("Particle min size: " + particleMinSize.toStringAsFixed(2)).text.size(25).white.make(),
+        ("Particle min size: " + particleMinSize.toStringAsFixed(2))
+            .text
+            .size(25)
+            .white
+            .make(),
         Slider(
             value: particleMinSize,
             max: particleMaxSize,
@@ -142,11 +158,16 @@ class _MyHomePageState extends State<MyHomePage> {
             onChanged: ((value) {
               setState(() {
                 particleMinSize = value;
-                liveBackgroundController.setParticleSize(particleMinSize, particleMaxSize);
+                liveBackgroundController.setParticleSize(
+                    particleMinSize, particleMaxSize);
               });
             })),
         Height(30),
-        ("Particle max size: " + particleMaxSize.toStringAsFixed(2)).text.size(25).white.make(),
+        ("Particle max size: " + particleMaxSize.toStringAsFixed(2))
+            .text
+            .size(25)
+            .white
+            .make(),
         Slider(
             value: particleMaxSize,
             max: 150,
@@ -154,7 +175,8 @@ class _MyHomePageState extends State<MyHomePage> {
             onChanged: ((value) {
               setState(() {
                 particleMaxSize = value;
-                liveBackgroundController.setParticleSize(particleMinSize, particleMaxSize);
+                liveBackgroundController.setParticleSize(
+                    particleMinSize, particleMaxSize);
               });
             })),
         Height(30),

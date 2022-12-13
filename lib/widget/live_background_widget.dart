@@ -39,7 +39,8 @@ class LiveBackgroundWidget extends StatefulWidget {
   State<LiveBackgroundWidget> createState() => _LiveBackgroundWidgetState();
 }
 
-class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget> with SingleTickerProviderStateMixin {
+class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
+    with SingleTickerProviderStateMixin {
   BokehFx? _bgFx;
   Ticker? _ticker;
   Palette _palette = Palette(colors: [Colors.white, Colors.yellow]);
@@ -70,17 +71,17 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget> with Single
 
   void initController() {
     widget.controller?.setPalette = (palette) {
-      _bgFx!.setPalette(palette);
+      _bgFx?.setPalette(palette);
       setState(() {});
     };
     widget.controller?.setParticleCount = (count) {
-      _bgFx!.setParticleCount(count);
+      _bgFx?.setParticleCount(count);
     };
     widget.controller?.setVelocity = (vx, vy) {
-      _bgFx!.setVelocity(vx, vy);
+      _bgFx?.setVelocity(vx, vy);
     };
     widget.controller?.setParticleSize = (vx, vy) {
-      _bgFx!.setParticleSize(vx, vy);
+      _bgFx?.setParticleSize(vx, vy);
     };
   }
 
@@ -112,7 +113,6 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget> with Single
                     sigmaX: 2,
                     sigmaY: 0,
                   ),
-                  // filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
                   child: const Text(" "),
                 ),
               ],
@@ -137,7 +137,8 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget> with Single
     }
 
     if (particleMinSize != null || particleMaxSize != null) {
-      bgFx.setParticleSize(particleMinSize ?? 0, particleMaxSize ?? particleMinSize ?? 0);
+      bgFx.setParticleSize(
+          particleMinSize ?? 0, particleMaxSize ?? particleMinSize ?? 0);
     }
 
     if (velocityX != null || velocityY != null) {

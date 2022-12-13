@@ -1,7 +1,8 @@
 name: live_background
-description: A new Flutter package project.
-version: 0.0.1
-homepage:
+description: Provide nice moving particle bokeh effect wall paper on your background.
+version: 0.0.3
+homepage: https://github.com/bansooknam/live_background
+#dartfmt -w .
 
 environment:
   sdk: '>=2.17.6 <3.0.0'

@@ -13,7 +13,7 @@ live_background: ^{latest version}
 
 ## Usage
 
-1. Add LiveBackgroundWidget() Where you want
+1. Add LiveBackgroundWidget() where you want
 
 ```dart
 import 'package:live_background/live_background.dart';
@@ -25,14 +25,14 @@ Stack(children: [LiveBackgroundWidget(), AnyWidget()])
 
 ```dart
 //for example
- LiveBackgroundWidget(
-                    palette: Palette(colors: [Colors.red, Colors.green]),
-                    velocityX: 2.5,
-                    velocityY: 0,
-                    particleMinSize: 10,
-                    particleMaxSize: 30,
-                    particleCount: 250,
-                  )
+LiveBackgroundWidget(
+   palette: Palette(colors: [Colors.red, Colors.green]),
+   velocityX: 2.5,
+   velocityY: 0,
+   particleMinSize: 10,
+   particleMaxSize: 30,
+   particleCount: 250,
+)
 ```
 
 3. You can change values dynamically using LiveBackgroundController.
@@ -40,10 +40,10 @@ Stack(children: [LiveBackgroundWidget(), AnyWidget()])
 ```dart
  final liveBackgroundController = LiveBackgroundController();
 
- LiveBackgroundWidget(
-                    controller: liveBackgroundController,
-                    palette: _palette,
-                  )
+LiveBackgroundWidget(
+  controller: liveBackgroundController,
+  palette: _palette,
+)
 
 liveBackgroundController.setParticleCount(400);
 liveBackgroundController.setVelocity(2.0, 10.5);

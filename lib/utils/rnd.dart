@@ -77,7 +77,8 @@ class Rnd {
           return a[1].compareTo(b[1]);
         });
 
-        List<Color> sortedColors = lumDiff.map((d) => colors[d[0] + 1 as int]).toList();
+        List<Color> sortedColors =
+            lumDiff.map((d) => colors[d[0] + 1 as int]).toList();
 
         result = Palette(
           colors: [colors[0]] + sortedColors,
