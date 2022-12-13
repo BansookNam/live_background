@@ -1,8 +1,8 @@
 name: live_background
 description: Provide nice moving particle bokeh effect wall paper on your background.
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/bansooknam/live_background
-#dartfmt -w .
+#flutter format . 
 
 environment:
   sdk: '>=2.17.6 <3.0.0'

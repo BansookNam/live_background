@@ -8,6 +8,7 @@ import 'package:nav/nav.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'dialog/edit_color_dialog.dart';
+import 'showcase/enum_show_case.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,6 +25,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Live Background Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -51,6 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
   double particleMinSize = 10;
   double particleMaxSize = 50;
   bool hideSetting = false;
+  ShowCase? showCase;
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
             if (hideSetting) {
               setState(() {
                 hideSetting = false;
+                showCase = null;
               });
             } else {
               await showEditColorDialog(context);
@@ -85,7 +90,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   SafeArea(
                     child: SingleChildScrollView(
-                      child: hideSetting ? Container() : settingWidget(),
+                      child: hideSetting
+                          ? showCase?.getWidget(context) ?? Container()
+                          : settingWidget(),
                     ),
                   ),
                 ],
@@ -187,6 +194,32 @@ class _MyHomePageState extends State<MyHomePage> {
                 hideSetting = true;
               });
             }),
+        ...ShowCase.values.map(
+          (e) {
+            return SquareButton(
+                text: "Show case: ${e.showCaseName}",
+                onPressed: () {
+                  setState(() {
+                    hideSetting = true;
+                    showCase = e;
+                  });
+                  liveBackgroundController.setPalette(e.palette);
+
+                  switch (e) {
+                    case ShowCase.Christmas:
+                      liveBackgroundController.setParticleCount(500);
+                      liveBackgroundController.setParticleSize(5, 30);
+                      liveBackgroundController.setVelocity(0, -1);
+                      break;
+                    case ShowCase.HappyNewYear:
+                      liveBackgroundController.setParticleCount(300);
+                      liveBackgroundController.setParticleSize(1, 50);
+                      liveBackgroundController.setVelocity(-1, 1);
+                      break;
+                  }
+                });
+          },
+        ).toList(),
         Height(300)
       ]),
     );

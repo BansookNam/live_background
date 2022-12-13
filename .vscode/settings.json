@@ -1,0 +1,20 @@
+{
+  "search.exclude": {
+      "**/.fvm": true
+    },
+    // Remove from file watching
+    "files.watcherExclude": {
+      "**/.fvm": true
+    },
+    "dart.lineLength": 80,
+    "[dart]": {
+      "editor.formatOnSave": true,
+      "editor.rulers": [
+        80
+      ],
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    }
+  },
+  "dart.flutterSdkPath": "/Users/nam/Apps/flutter",
+  }

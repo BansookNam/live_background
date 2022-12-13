@@ -43,7 +43,7 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     with SingleTickerProviderStateMixin {
   BokehFx? _bgFx;
   Ticker? _ticker;
-  Palette _palette = Palette(colors: [Colors.white, Colors.yellow]);
+  Palette _palette = const Palette(colors: [Colors.white, Colors.yellow]);
 
   @override
   void initState() {

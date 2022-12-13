@@ -3,9 +3,9 @@ import 'dart:ui';
 /// Holds a list of colors.
 class Palette {
   /// The palette's color members. All unique.
-  List<Color>? colors;
+  final List<Color>? colors;
 
-  Palette({this.colors});
+  const Palette({this.colors});
 
   /// Creates a new palette from Hex String list.
   factory Palette.fromStringList(List<String> hexList) {

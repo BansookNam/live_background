@@ -47,7 +47,7 @@ abstract class BaseFx with ChangeNotifier {
     required Size size,
     this.numParticles = 5000,
   }) {
-    palette = Palette(colors: [Colors.transparent]);
+    palette = const Palette(colors: [Colors.transparent]);
     particles = List<Particle?>.filled(numParticles, null);
     setSize(size);
   }
