@@ -25,7 +25,8 @@ live_background: ^{latest version}
 
 2. Happy New Year
 
-https://user-images.githubusercontent.com/7719604/207383412-5c70a3be-9146-4136-b48b-9fe276938f34.mp4
+![happy](https://user-images.githubusercontent.com/7719604/207399487-29aa0b29-c71e-4e68-9272-c1fd5b1c873a.gif)
+
 
 3. Change Particle Count
 
