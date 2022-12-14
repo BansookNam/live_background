@@ -1,3 +1,7 @@
+## 0.0.6
+
+Update Readme doc
+
 ## 0.0.5
 
 Support Screen Orientation change
