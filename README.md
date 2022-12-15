@@ -63,6 +63,9 @@ LiveBackgroundWidget(
    particleMinSize: 10,
    particleMaxSize: 30,
    particleCount: 250,
+   blurSigmaX: 3,
+   blurSigmaY: 4.5,
+   clipBoundary: true //default value is true
 )
 ```
 
