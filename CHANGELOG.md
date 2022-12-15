@@ -1,3 +1,10 @@
+## 0.0.7
+
+- Orientation change bug fix for Android
+- Add Blur Sigma control value
+
+### 2022-12-15
+
 ## 0.0.6
 
 Update Readme doc

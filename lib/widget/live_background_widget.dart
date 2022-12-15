@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -21,19 +22,25 @@ class LiveBackgroundWidget extends StatefulWidget {
   final double? velocityY;
   final double? particleMinSize;
   final double? particleMaxSize;
+  final double blurSigmaX;
+  final double blurSigmaY;
+  final bool clipBoundary;
 
   ///
   ///All Parameters are initial values. If you want to change the value after first build you should use controller.
-  const LiveBackgroundWidget(
-      {Key? key,
-      this.controller,
-      this.palette,
-      this.particleCount,
-      this.velocityX,
-      this.velocityY,
-      this.particleMinSize,
-      this.particleMaxSize})
-      : super(key: key);
+  const LiveBackgroundWidget({
+    Key? key,
+    this.controller,
+    this.palette,
+    this.particleCount,
+    this.velocityX,
+    this.velocityY,
+    this.particleMinSize,
+    this.particleMaxSize,
+    this.blurSigmaX = 2,
+    this.blurSigmaY = 0,
+    this.clipBoundary = true,
+  }) : super(key: key);
 
   @override
   State<LiveBackgroundWidget> createState() => _LiveBackgroundWidgetState();
@@ -41,10 +48,11 @@ class LiveBackgroundWidget extends StatefulWidget {
 
 class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     with SingleTickerProviderStateMixin {
-  BokehFx? _bgFx;
+  BokehFx? _bokehFx;
   Ticker? _ticker;
   Palette _palette = const Palette(colors: [Colors.white, Colors.yellow]);
   Size size = const Size(0, 0);
+  Orientation? orientation;
 
   @override
   void initState() {
@@ -53,16 +61,13 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     }
     _ticker = createTicker(_tick)..start();
 
-    initController();
+    _initController();
 
     WidgetsBinding.instance.endOfFrame.then(
       (_) {
         if (mounted) {
-          size = MediaQuery.of(context).size;
-          _bgFx = BokehFx(
-            size: Size(size.width, size.height),
-          );
-          initBgFx();
+          _initSize(context);
+          _initBgFx();
           setState(() {});
         }
       },
@@ -70,24 +75,24 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     super.initState();
   }
 
-  void initController() {
+  void _initController() {
     widget.controller?.setPalette = (palette) {
-      _bgFx?.setPalette(palette);
+      _bokehFx?.setPalette(palette);
       setState(() {});
     };
     widget.controller?.setParticleCount = (count) {
-      _bgFx?.setParticleCount(count);
+      _bokehFx?.setParticleCount(count);
     };
     widget.controller?.setVelocity = (vx, vy) {
-      _bgFx?.setVelocity(vx, vy);
+      _bokehFx?.setVelocity(vx, vy);
     };
     widget.controller?.setParticleSize = (vx, vy) {
-      _bgFx?.setParticleSize(vx, vy);
+      _bokehFx?.setParticleSize(vx, vy);
     };
   }
 
   void _tick(Duration duration) {
-    _bgFx?.tick(duration);
+    _bokehFx?.tick(duration);
   }
 
   @override
@@ -98,36 +103,70 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
 
   @override
   Widget build(BuildContext context) {
-    final newSize = MediaQuery.of(context).size;
-    if (newSize != size) {
-      size = newSize;
-      _bgFx?.setSize(newSize);
-    }
-    return RepaintBoundary(
-      child: _bgFx == null
-          ? Container()
-          : Stack(
-              children: <Widget>[
-                CustomPaint(
-                  painter: ParticlePainter(
-                    fx: _bgFx,
-                  ),
-                  child: Container(),
-                ),
-                BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 2,
-                    sigmaY: 0,
-                  ),
-                  child: const Text(" "),
-                ),
-              ],
-            ),
+    return OrientationBuilder(
+      builder: (BuildContext context, Orientation changedOrientation) {
+        if (orientation != null && orientation != changedOrientation) {
+          //force rebuild because some slow device's paintSize reflect their size later
+          _delay(() {
+            setState(() {});
+          });
+        }
+        orientation = changedOrientation;
+
+        _initSize(context);
+        return RepaintBoundary(
+          child: Stack(
+            children: [
+              if (_bokehFx == null)
+                Container()
+              else if (widget.clipBoundary)
+                ClipRect(
+                  child: bokeh,
+                )
+              else
+                bokeh
+            ],
+          ),
+        );
+      },
     );
   }
 
-  void initBgFx() {
-    final bgFx = _bgFx;
+  void _initSize(BuildContext context) {
+    final box = context.findRenderObject() as RenderBox;
+    if (box.hasSize) {
+      final paintSize = Size(box.paintBounds.width, box.paintBounds.height);
+      if (size != paintSize) {
+        _bokehFx ??= BokehFx(
+          size: Size(paintSize.width, paintSize.height),
+        );
+
+        size = paintSize;
+        _bokehFx?.setSize(paintSize);
+      }
+    }
+  }
+
+  Widget get bokeh => Stack(
+        children: <Widget>[
+          CustomPaint(
+            painter: ParticlePainter(
+              fx: _bokehFx,
+            ),
+            child: Container(),
+          ),
+          BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: widget.blurSigmaX,
+              sigmaY: widget.blurSigmaY,
+            ),
+            child: const Text(" "),
+          ),
+        ],
+      );
+
+  void _initBgFx() {
+    final bgFx = _bokehFx;
     final particleCount = widget.particleCount;
     final velocityX = widget.velocityX;
     final velocityY = widget.velocityY;
@@ -150,5 +189,11 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     if (velocityX != null || velocityY != null) {
       bgFx.setVelocity(velocityX ?? 0, velocityY ?? 0);
     }
+  }
+
+  void _delay(Function func, {int milliseconds = 300}) async {
+    Timer(Duration(milliseconds: milliseconds), () {
+      func();
+    });
   }
 }

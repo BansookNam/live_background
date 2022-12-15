@@ -43,7 +43,7 @@ class _DialogState extends DialogState<EditColorListDialog> {
     final radius = Radius.circular(14);
     final viewPaddingBottom = MediaQuery.of(context).viewPadding.bottom;
     return Material(
-      color: Colors.transparent,
+      color: Colors.black.withOpacity(0.5),
       child: InkWell(
         onTap: () {
           widget.hide();
@@ -107,7 +107,7 @@ class _DialogState extends DialogState<EditColorListDialog> {
                   },
                   text: 'Add new',
                 ),
-                Height(10),
+                Height(5),
                 SquareButton(
                   onPressed: () {
                     widget.hide({
@@ -115,7 +115,7 @@ class _DialogState extends DialogState<EditColorListDialog> {
                       EditColorListDialog.data: editedColorList
                     });
                   },
-                  text: 'Done',
+                  text: 'Apply',
                 ),
                 Height(viewPaddingBottom)
               ],
