@@ -1,3 +1,9 @@
+## 0.0.8
+
+- Add fix size (to prevent blinking when keyboard is shown/hidden.)
+
+### 2022-12-16
+
 ## 0.0.7
 
 - Orientation change bug fix for Android

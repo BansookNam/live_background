@@ -25,6 +25,7 @@ class LiveBackgroundWidget extends StatefulWidget {
   final double blurSigmaX;
   final double blurSigmaY;
   final bool clipBoundary;
+  final bool fixSize;
 
   ///
   ///All Parameters are initial values. If you want to change the value after first build you should use controller.
@@ -40,6 +41,7 @@ class LiveBackgroundWidget extends StatefulWidget {
     this.blurSigmaX = 2,
     this.blurSigmaY = 0,
     this.clipBoundary = true,
+    this.fixSize = false,
   }) : super(key: key);
 
   @override
@@ -134,7 +136,7 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
 
   void _initSize(BuildContext context) {
     final box = context.findRenderObject() as RenderBox;
-    if (box.hasSize) {
+    if (box.hasSize && (size == const Size(0, 0) || !widget.fixSize)) {
       final paintSize = Size(box.paintBounds.width, box.paintBounds.height);
       if (size != paintSize) {
         _bokehFx ??= BokehFx(
