@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:live_background/object/particle_shape_type.dart';
+import 'package:live_background/widget/prevent_recursive_call.dart';
 
 import '../fx/particle_painter.dart';
 import '../live_background.dart';
@@ -31,7 +31,6 @@ class LiveBackgroundWidget extends StatefulWidget {
   final bool fixSize;
   final ParticleShapeType shape;
 
-  ///
   ///All Parameters are initial values. If you want to change the value after first build you should use controller.
   const LiveBackgroundWidget({
     Key? key,
@@ -54,7 +53,7 @@ class LiveBackgroundWidget extends StatefulWidget {
 }
 
 class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, PreventRecursiveCall {
   BokehFx? _bokehFx;
   Ticker? _ticker;
   Palette _palette = const Palette(colors: [Colors.white, Colors.yellow]);
@@ -65,11 +64,8 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
 
   @override
   void initState() {
-    if (widget.palette != null) {
-      _palette = widget.palette!;
-    }
+    _palette = widget.palette ?? _palette;
     shape = widget.shape;
-
     _ticker = createTicker(_tick)..start();
 
     _initController();
@@ -126,9 +122,7 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
       builder: (BuildContext context, Orientation changedOrientation) {
         if (orientation != null && orientation != changedOrientation) {
           //force rebuild because some slow device's paintSize reflect their size later
-          _delay(() {
-            setState(() {});
-          });
+          _callDelayedSetState();
         }
         orientation = changedOrientation;
 
@@ -140,10 +134,10 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
                 Container()
               else if (widget.clipBoundary)
                 ClipRect(
-                  child: bokeh,
+                  child: _bokeh,
                 )
               else
-                bokeh
+                _bokeh
             ],
           ),
         );
@@ -156,25 +150,27 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     if (box.hasSize &&
         (size == const Size(0, 0) || !widget.fixSize || isNeedReset)) {
       final paintSize = Size(box.paintBounds.width, box.paintBounds.height);
-      if (size != paintSize || isNeedReset) {
+      if (paintSize == const Size(0, 0)) {
+        recursiveCallCount++;
+        if (isRecursiveCountSafe) {
+          _callDelayedSetState();
+        }
+      } else if (size != paintSize || isNeedReset) {
         if (_bokehFx == null || isNeedReset) {
           _bokehFx = BokehFx(
             size: Size(paintSize.width, paintSize.height),
             shape: shape,
           );
-          if (isNeedReset) {
-            _initBgFx();
-            isNeedReset = false;
-          }
+          _initBgFx();
+          isNeedReset = false;
         }
-
         size = paintSize;
         _bokehFx?.setSize(paintSize);
       }
     }
   }
 
-  Widget get bokeh => Stack(
+  Widget get _bokeh => Stack(
         children: <Widget>[
           CustomPaint(
             painter: ParticlePainter(
@@ -218,9 +214,21 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     }
   }
 
-  void _delay(Function func, {int milliseconds = 300}) async {
-    Timer(Duration(milliseconds: milliseconds), () {
-      func();
+  void _emptyCall() {}
+
+  void _callDelayedSetState() {
+    _delay(() {
+      setState(_emptyCall);
     });
+  }
+
+  void _delay(Function func) async {
+    WidgetsBinding.instance.endOfFrame.then(
+      (_) {
+        if (mounted) {
+          func();
+        }
+      },
+    );
   }
 }

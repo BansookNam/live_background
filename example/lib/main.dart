@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
               await showEditColorDialog(context);
             }
           },
-          child: Icon(hideSetting ? Icons.remove_red_eye : Icons.palette),
+          child: Icon(hideSetting ? Icons.settings : Icons.palette),
         ),
       ),
       body: Builder(
