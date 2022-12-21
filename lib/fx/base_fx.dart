@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:live_background/object/particle_shape_type.dart';
 
 import '../object/palette.dart';
 import '../object/particle.dart';
@@ -43,9 +44,12 @@ abstract class BaseFx with ChangeNotifier {
   double particleMinSize = baseParticleMinSize;
   double particleMaxSize = baseParticleMaxSize;
 
+  ParticleShapeType shape;
+
   BaseFx({
     required Size size,
     this.numParticles = 5000,
+    this.shape = ParticleShapeType.circle,
   }) {
     palette = const Palette(colors: [Colors.transparent]);
     particles = List<Particle?>.filled(numParticles, null);
@@ -57,7 +61,7 @@ abstract class BaseFx with ChangeNotifier {
     if (palette == null) return;
     for (int i = 0; i < numParticles; i++) {
       var color = Rnd.getItem(palette!.colors!);
-      particles[i] = Particle(color: color);
+      particles[i] = Particle(color: color, shape: shape.drawType);
       resetParticle(i);
     }
   }
@@ -79,6 +83,11 @@ abstract class BaseFx with ChangeNotifier {
     particleMinSize = min;
     particleMaxSize = max;
     particles = List<Particle?>.filled(numParticles, null);
+    init();
+  }
+
+  void setShape(ParticleShapeType shape) {
+    this.shape = shape;
     init();
   }
 

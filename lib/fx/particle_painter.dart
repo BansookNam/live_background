@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:live_background/object/particle_draw_type.dart';
 
 import 'base_fx.dart';
 
@@ -24,8 +25,15 @@ class ParticlePainter extends CustomPainter {
         ..color = p.color.withAlpha((255 * p.opacity).floor())
         ..strokeWidth = p.size * .1
         ..style = p.isFilled ? PaintingStyle.fill : PaintingStyle.stroke;
-
-      canvas.drawCircle(pos, p.size / 1.2, paint);
+      switch (p.shape) {
+        case ParticleDrawShape.circle:
+          canvas.drawCircle(pos, p.size / 1.2, paint);
+          break;
+        case ParticleDrawShape.square:
+          canvas.drawRect(
+              Rect.fromLTRB(pos.dx, pos.dy, pos.dx + p.size, pos.dy + p.size),
+              paint);
+      }
     }
   }
 

@@ -7,7 +7,8 @@ import '../widget/height.dart';
 
 enum ShowCase {
   Christmas,
-  HappyNewYear;
+  HappyNewYear,
+  Matrix;
 
   Widget getWidget(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -18,6 +19,14 @@ enum ShowCase {
           width: size.width,
           child: Center(
             child: Image.asset("assets/images/merry.png"),
+          ),
+        );
+      case ShowCase.Matrix:
+        return Container(
+          height: size.height,
+          width: size.width,
+          child: Center(
+            child: Image.asset("assets/images/matrix.png").pSymmetric(h: 40),
           ),
         );
       case ShowCase.HappyNewYear:
@@ -51,6 +60,8 @@ enum ShowCase {
 
   String get showCaseName {
     switch (this) {
+      case ShowCase.Matrix:
+        return "Matrix";
       case ShowCase.Christmas:
         return "Christmas";
       case ShowCase.HappyNewYear:
@@ -60,6 +71,11 @@ enum ShowCase {
 
   Palette get palette {
     switch (this) {
+      case ShowCase.Matrix:
+        return const Palette(colors: [
+          Color(0xff165B33),
+          Color(0xff83ec00),
+        ]);
       case ShowCase.Christmas:
         return const Palette(colors: [
           Color(0xff165B33),

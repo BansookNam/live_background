@@ -1,8 +1,10 @@
 import 'package:example/widget/height.dart';
 import 'package:example/widget/square_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:live_background/fx/base_fx.dart';
 import 'package:live_background/live_background.dart';
+import 'package:live_background/object/particle_shape_type.dart';
 import 'package:live_background/widget/live_background_widget.dart';
 import 'package:nav/nav.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -54,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double particleMaxSize = 50;
   bool hideSetting = false;
   ShowCase? showCase;
+  ParticleShapeType shapeType = ParticleShapeType.circle;
 
   @override
   void initState() {
@@ -87,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   LiveBackgroundWidget(
                     controller: liveBackgroundController,
                     palette: _palette,
+                    shape: shapeType,
                   ),
                   SafeArea(
                     child: SingleChildScrollView(
@@ -117,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onChanged: ((value) {
               setState(() {
                 particleCount = value;
-                liveBackgroundController.setParticleCount(value.toInt());
+                liveBackgroundController.setCount(value.toInt());
               });
             })),
         Height(30),
@@ -165,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onChanged: ((value) {
               setState(() {
                 particleMinSize = value;
-                liveBackgroundController.setParticleSize(
+                liveBackgroundController.setSize(
                     particleMinSize, particleMaxSize);
               });
             })),
@@ -182,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onChanged: ((value) {
               setState(() {
                 particleMaxSize = value;
-                liveBackgroundController.setParticleSize(
+                liveBackgroundController.setSize(
                     particleMinSize, particleMaxSize);
               });
             })),
@@ -193,6 +197,23 @@ class _MyHomePageState extends State<MyHomePage> {
               setState(() {
                 hideSetting = true;
               });
+            }),
+        SquareButton(
+            text: "Toggle Shape - now: ${describeEnum(shapeType)}",
+            onPressed: () {
+              switch (shapeType) {
+                case ParticleShapeType.circle:
+                  shapeType = ParticleShapeType.square;
+                  break;
+                case ParticleShapeType.square:
+                  shapeType = ParticleShapeType.random;
+                  break;
+                case ParticleShapeType.random:
+                  shapeType = ParticleShapeType.circle;
+                  break;
+              }
+              setState(() {});
+              liveBackgroundController.setShape(shapeType);
             }),
         ...ShowCase.values.map(
           (e) {
@@ -206,15 +227,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   liveBackgroundController.setPalette(e.palette);
 
                   switch (e) {
+                    case ShowCase.Matrix:
+                      liveBackgroundController.setCount(3000);
+                      liveBackgroundController.setSize(5, 30);
+                      liveBackgroundController.setVelocity(0, -7);
+                      liveBackgroundController
+                          .setShape(ParticleShapeType.square);
+                      break;
                     case ShowCase.Christmas:
-                      liveBackgroundController.setParticleCount(500);
-                      liveBackgroundController.setParticleSize(5, 30);
+                      liveBackgroundController.setCount(500);
+                      liveBackgroundController.setSize(5, 30);
                       liveBackgroundController.setVelocity(0, -1);
+                      liveBackgroundController
+                          .setShape(ParticleShapeType.circle);
                       break;
                     case ShowCase.HappyNewYear:
-                      liveBackgroundController.setParticleCount(300);
-                      liveBackgroundController.setParticleSize(1, 50);
+                      liveBackgroundController.setCount(300);
+                      liveBackgroundController.setSize(1, 50);
                       liveBackgroundController.setVelocity(-1, 1);
+                      liveBackgroundController
+                          .setShape(ParticleShapeType.circle);
                       break;
                   }
                 });

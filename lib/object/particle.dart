@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:live_background/object/particle_draw_type.dart';
 
 class Particle {
   /// The particle's X-position.
@@ -43,6 +44,8 @@ class Particle {
   /// The particle's distribution value.
   int distribution;
 
+  ParticleDrawShape shape;
+
   Particle({
     this.x = 0,
     this.y = 0,
@@ -58,5 +61,6 @@ class Particle {
     this.isFlowing = false,
     this.color = Colors.black,
     this.distribution = 0,
+    this.shape = ParticleDrawShape.circle,
   });
 }

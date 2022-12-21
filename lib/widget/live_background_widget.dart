@@ -3,15 +3,18 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:live_background/object/particle_shape_type.dart';
 
 import '../fx/particle_painter.dart';
 import '../live_background.dart';
 
 class LiveBackgroundController {
   late Function(Palette palette) setPalette;
-  late Function(int count) setParticleCount;
+  late Function(int count) setCount;
   late Function(double vx, double vy) setVelocity;
-  late Function(double vx, double vy) setParticleSize;
+  late Function(double vx, double vy) setSize;
+  late Function(ParticleShapeType) setShape;
+  late Function() reset;
 }
 
 class LiveBackgroundWidget extends StatefulWidget {
@@ -26,6 +29,7 @@ class LiveBackgroundWidget extends StatefulWidget {
   final double blurSigmaY;
   final bool clipBoundary;
   final bool fixSize;
+  final ParticleShapeType shape;
 
   ///
   ///All Parameters are initial values. If you want to change the value after first build you should use controller.
@@ -42,6 +46,7 @@ class LiveBackgroundWidget extends StatefulWidget {
     this.blurSigmaY = 0,
     this.clipBoundary = true,
     this.fixSize = false,
+    this.shape = ParticleShapeType.circle,
   }) : super(key: key);
 
   @override
@@ -55,12 +60,16 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
   Palette _palette = const Palette(colors: [Colors.white, Colors.yellow]);
   Size size = const Size(0, 0);
   Orientation? orientation;
+  bool isNeedReset = false;
+  ParticleShapeType shape = ParticleShapeType.circle;
 
   @override
   void initState() {
     if (widget.palette != null) {
       _palette = widget.palette!;
     }
+    shape = widget.shape;
+
     _ticker = createTicker(_tick)..start();
 
     _initController();
@@ -82,14 +91,22 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
       _bokehFx?.setPalette(palette);
       setState(() {});
     };
-    widget.controller?.setParticleCount = (count) {
+    widget.controller?.setCount = (count) {
       _bokehFx?.setParticleCount(count);
     };
     widget.controller?.setVelocity = (vx, vy) {
       _bokehFx?.setVelocity(vx, vy);
     };
-    widget.controller?.setParticleSize = (vx, vy) {
+    widget.controller?.setSize = (vx, vy) {
       _bokehFx?.setParticleSize(vx, vy);
+    };
+    widget.controller?.setShape = (shape) {
+      _bokehFx?.setShape(shape);
+    };
+    widget.controller?.reset = () {
+      setState(() {
+        isNeedReset = true;
+      });
     };
   }
 
@@ -136,12 +153,20 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
 
   void _initSize(BuildContext context) {
     final box = context.findRenderObject() as RenderBox;
-    if (box.hasSize && (size == const Size(0, 0) || !widget.fixSize)) {
+    if (box.hasSize &&
+        (size == const Size(0, 0) || !widget.fixSize || isNeedReset)) {
       final paintSize = Size(box.paintBounds.width, box.paintBounds.height);
-      if (size != paintSize) {
-        _bokehFx ??= BokehFx(
-          size: Size(paintSize.width, paintSize.height),
-        );
+      if (size != paintSize || isNeedReset) {
+        if (_bokehFx == null || isNeedReset) {
+          _bokehFx = BokehFx(
+            size: Size(paintSize.width, paintSize.height),
+            shape: shape,
+          );
+          if (isNeedReset) {
+            _initBgFx();
+            isNeedReset = false;
+          }
+        }
 
         size = paintSize;
         _bokehFx?.setSize(paintSize);

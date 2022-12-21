@@ -1,17 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:live_background/object/particle_shape_type.dart';
 
 import '../object/particle.dart';
 import '../utils/rnd.dart';
 import 'base_fx.dart';
 
 class BokehFx extends BaseFx {
-  BokehFx({required Size size})
-      : super(
-          size: size,
-          numParticles: 320,
-        );
+  BokehFx({required Size size, required ParticleShapeType shape})
+      : super(size: size, numParticles: 320, shape: shape);
 
   @override
   void tick(Duration duration) {

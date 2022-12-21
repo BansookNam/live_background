@@ -1,3 +1,10 @@
+## 0.1.0
+
+- Add change particle shape
+- Add Show Case: Matrix
+
+### 2022-12-21
+
 ## 0.0.8
 
 - Add fix size (to prevent blinking when keyboard is shown/hidden.)
