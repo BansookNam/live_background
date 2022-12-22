@@ -195,10 +195,11 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     final velocityY = widget.velocityY;
     final particleMinSize = widget.particleMinSize;
     final particleMaxSize = widget.particleMaxSize;
+    final palette = widget.palette ?? _palette;
     if (bgFx == null) {
       return;
     }
-    bgFx.setPalette(_palette);
+    bgFx.setPalette(palette);
 
     if (particleCount != null) {
       bgFx.setParticleCount(particleCount);

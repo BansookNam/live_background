@@ -1,3 +1,7 @@
+## 0.1.2
+
+- Use parent's colors when use controller.reset()
+
 ## 0.1.1
 
 - Fix bug - Render is not triggered in the begining.
