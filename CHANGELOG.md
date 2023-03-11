@@ -1,3 +1,7 @@
+## 0.1.3
+
+- change property everytime if controller is not exist
+
 ## 0.1.2
 
 - Use parent's colors when use controller.reset()

@@ -118,6 +118,9 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.controller == null) {
+      _initBgFx();
+    }
     return OrientationBuilder(
       builder: (BuildContext context, Orientation changedOrientation) {
         if (orientation != null && orientation != changedOrientation) {
@@ -196,9 +199,12 @@ class _LiveBackgroundWidgetState extends State<LiveBackgroundWidget>
     final particleMinSize = widget.particleMinSize;
     final particleMaxSize = widget.particleMaxSize;
     final palette = widget.palette ?? _palette;
+    final shape = widget.shape;
     if (bgFx == null) {
       return;
     }
+    bgFx.setShape(shape);
+
     bgFx.setPalette(palette);
 
     if (particleCount != null) {
